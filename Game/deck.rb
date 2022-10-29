@@ -3,7 +3,11 @@ class Deck
   ALL_CARDS = [ 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 'J', 'Q', 'K', 'A' ].freeze
   SUITS = [ '+', '<3', '^', '<>' ].freeze
 
-  attr_reader :given
+  attr_accessor :given #, :name
+
+  #def initialize(name)
+  #  @name = name
+  #end
 
   def give_card
     @given ||= []
