@@ -1,4 +1,5 @@
 require_relative 'deck'
+require_relative 'card_counter'
 
 class Menu
 
@@ -11,6 +12,10 @@ end
 
 def card_on_deck #вытаскиваем 1 карту на стол
   @@deck['d'].give_card
+
+  cards_on_hands = @@deck['d'].given
+  sum = @@deck['d'].all_sum
+  puts "Cards on hands: #{cards_on_hands}, summar #{sum}"
 
   rescue RuntimeError => e
     puts "#{e}"

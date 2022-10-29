@@ -1,13 +1,12 @@
+require_relative 'card_counter'
+
 class Deck
+  include CardCounter
 
   ALL_CARDS = [ 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 'J', 'Q', 'K', 'A' ].freeze
-  SUITS = [ '+', '<3', '^', '<>' ].freeze
+  SUITS = [ '♧', '♡', '♤', '♢' ].freeze
 
-  attr_accessor :given #, :name
-
-  #def initialize(name)
-  #  @name = name
-  #end
+  attr_accessor :given, :sum
 
   def give_card
     @given ||= []
@@ -22,4 +21,5 @@ class Deck
   def gived?
     raise "Already given!" if @given.include?(@given_now)
   end
+
 end
