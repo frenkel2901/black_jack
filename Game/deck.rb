@@ -14,12 +14,11 @@ class Deck
     @given_now = "#{ALL_CARDS.sample}#{SUITS.sample}"
     gived?
     @given << @given_now
-    puts @given_now
   end
 
   private
 
   def gived?
-    raise "Already given!" if @given.include?(@given_now)
+    raise "" if @given.include?(@given_now)
   end
 end

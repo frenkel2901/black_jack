@@ -21,15 +21,16 @@ class Menu
     @user[:user] = user
     @dealer[:dealer] = dealer
 
-    puts "You have #{user.bank - 10}$"
-    dealer.bank -= 10
-    @bet = 10 + 10
     set_table
   end
 
   def set_table #подготавливаем стол к игре
     deck = Deck.new
     @deck['d'] = deck
+
+    @user[:user].bank -= 10
+    @dealer[:dealer].bank -= 10
+    @bet = 10 + 10
 
     for i in (0..1)
       card_on_deck
@@ -77,9 +78,10 @@ class Menu
       card_on_deck
       @user[:user].given << (@deck['d'].given_now)
       @sum = @user[:user].all_sum
+      dealer_choise
     end
 
-    puts "Your hand: #{@user[:user].given}, summary #{@user[:user].all_sum} points"
+    puts "Your hand: #{@user[:user].given}, summary #{@user[:user].sum} points"
   end
 
   def skip
@@ -88,47 +90,58 @@ class Menu
       open_cards
     else
       puts "Skip"
+      dealer_choise
     end
   end
   
   def open_cards
-    puts "Your hand: #{@user[:user].given}, summary #{@user[:user].all_sum} points"
-    puts "Dealer hand #{@dealer[:dealer].given}, summary #{@dealer[:dealer].all_sum} points"
+    dealer_choise
+    puts "Dealer hand #{@dealer[:dealer].given}, summary #{@dealer[:dealer].sum} points"
+    puts "Your hand: #{@user[:user].given}, summary #{@user[:user].sum} points"
 
-    u_sum = (21 - @user[:user].all_sum.to_i)
-    p_sum = (21 - @dealer[:dealer].all_sum.to_i)
+    u_sum = (21 - @user[:user].sum.to_i)
+    p_sum = (21 - @dealer[:dealer].sum.to_i)
     u_p = u_sum - p_sum
-    puts u_p
 
     if p_sum < 0 || (p_sum >= 0 && u_sum >= 0 && u_p < 0)
       @user[:user].bank += @bet.to_i
-      puts "Dealer symmary > 21, you win! Your bank #{@user[:user].bank}$"
+      puts "You win! Your bank #{@user[:user].bank}$"
     elsif u_sum == p_sum
       puts "Draw!"
       @user[:user].bank += 10
       @dealer[:dealer].bank += 10
-    elsif p_sum >= 0 && u_sum >= 0 && u_p > 0
-      @user[:user].bank -= @bet.to_i
-      puts "You loose. Your bank #{@user[:user].bank}$"
     else
+      puts "You loose. Your bank #{@user[:user].bank}$"
     end
-    Menu.new.set_table
+    next?
   end
 
   def dealer_choise
-    puts "Dealer choise"
-    sleep 3
-    if @dealer[:dealer].all_sum < 17
-      card_on_deck
-      @dealer[:dealer].given << (@deck['d'].given_now)
-      @sum = @dealer[:dealer].all_sum
+      if @dealer[:dealer].sum < 17 && @dealer[:dealer].given.size.to_i < 3
+        card_on_deck
+        @dealer[:dealer].given << (@deck['d'].given_now)
+        @sum = @dealer[:dealer].all_sum
+      end
+    @dealer[:dealer].given.size
+    print "Dealer have cards: #{@dealer[:dealer].given.size}\n"
+  end
+
+  def next?
+    puts "next - Next game"
+    puts "end - End game"
+    i = gets.chomp.to_s
+    case i
+    when "next"
+      clear_deck
+      set_table
+    when "end"
+      abort "You win: #{@user[:user].bank}!\n Goodbye!"
     end
-
-    puts "#{@dealer[:dealer].given.size.times { print "*"} }"
   end
 
-  def clear_deck  #очищаем стол после игры
+  def clear_deck  #очищаем стол после игры, забираем карты у игроков 
     @deck.delete("d")
+    @user[:user].given = []
+    @dealer[:dealer].given = []
   end
-
 end

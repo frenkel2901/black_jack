@@ -14,6 +14,5 @@ module CardCounter
         @sum += CARD_VALUE[value].to_i
       end
     end
-    puts @sum
   end
 end

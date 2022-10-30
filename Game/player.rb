@@ -9,5 +9,4 @@ class User
     @bank = 100
     @given = []
   end
-
 end
