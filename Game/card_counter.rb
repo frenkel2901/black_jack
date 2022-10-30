@@ -1,5 +1,5 @@
 module CardCounter
-  CARD_VALUE = {'J' => 10, 'Q' => 10, 'K' => 10, 'A' => [1, 11]}
+  CARD_VALUE = { 'J' => 10, 'Q' => 10, 'K' => 10, 'A' => [1, 11] }
 
   def all_sum
     @sum = 0

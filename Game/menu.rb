@@ -1,11 +1,10 @@
 CHOISE = [
-  {num: 1, title: "Skip", todo: :skip},
-  {num: 2, title: "Add card", todo: :user_add_card},
-  {num: 3, title: "Open cards", todo: :open_cards}
-]
+  { num: 1, title: 'Skip', todo: :skip },
+  { num: 2, title: 'Add card', todo: :user_add_card },
+  { num: 3, title: 'Open cards', todo: :open_cards }
+].freeze
 
 class Menu
-
   def initialize
     @deck = {}
     @user = {}
@@ -13,7 +12,7 @@ class Menu
   end
 
   def start
-    print "Enter your name: "
+    print 'Enter your name: '
     name = gets.chomp.to_s.capitalize
     user = User.new(name)
     dealer = Dealer.new("#{name}s dealer")
@@ -36,9 +35,6 @@ class Menu
       card_on_deck
       @user[:user].given << (@deck['d'].given_now)
       @sum = @user[:user].all_sum
-    end
-
-    for i in (0..1)
       card_on_deck
       @dealer[:dealer].given << (@deck['d'].given_now)
       @sum = @dealer[:dealer].all_sum
@@ -64,7 +60,7 @@ class Menu
       end
       puts '0 - End game'
       choise = gets.chomp.to_i
-      todo_hash = CHOISE.find { |list| list[:num] == choise}
+      todo_hash = CHOISE.find { |list| list[:num] == choise }
       send(todo_hash[:todo]) unless todo_hash.nil?
       break if choise.zero?
     end
@@ -72,7 +68,7 @@ class Menu
 
   def user_add_card
     if @user[:user].given.size.to_i > 2
-      puts "You already have 3 cards! Lets open"
+      puts 'You already have 3 cards! Lets open'
       open_cards
     else
       card_on_deck
@@ -86,10 +82,10 @@ class Menu
 
   def skip
     if @user[:user].given.size.to_i > 2
-      puts "You already have 3 cards! Lets open"
+      puts 'You already have 3 cards! Lets open'
       open_cards
     else
-      puts "Skip"
+      puts 'Skip'
       dealer_choise
     end
   end
@@ -103,11 +99,11 @@ class Menu
     p_sum = (21 - @dealer[:dealer].sum.to_i)
     u_p = u_sum - p_sum
 
-    if p_sum < 0 || (p_sum >= 0 && u_sum >= 0 && u_p < 0)
+    if p_sum.negative? || (p_sum >= 0 && u_sum >= 0 && u_p.negative?)
       @user[:user].bank += @bet.to_i
       puts "You win! Your bank #{@user[:user].bank}$"
     elsif u_sum == p_sum
-      puts "Draw!"
+      puts 'Draw!'
       @user[:user].bank += 10
       @dealer[:dealer].bank += 10
     else
@@ -117,30 +113,30 @@ class Menu
   end
 
   def dealer_choise
-      if @dealer[:dealer].sum < 17 && @dealer[:dealer].given.size.to_i < 3
-        card_on_deck
-        @dealer[:dealer].given << (@deck['d'].given_now)
-        @sum = @dealer[:dealer].all_sum
-      end
+    if @dealer[:dealer].sum < 17 && @dealer[:dealer].given.size.to_i < 3
+      card_on_deck
+      @dealer[:dealer].given << (@deck['d'].given_now)
+      @sum = @dealer[:dealer].all_sum
+    end
     @dealer[:dealer].given.size
     print "Dealer have cards: #{@dealer[:dealer].given.size}\n"
   end
 
   def next?
-    puts "next - Next game"
-    puts "end - End game"
+    puts 'next - Next game'
+    puts 'end - End game'
     i = gets.chomp.to_s
     case i
-    when "next"
+    when 'next'
       clear_deck
       set_table
-    when "end"
+    when 'end'
       abort "You win: #{@user[:user].bank}!\n Goodbye!"
     end
   end
 
-  def clear_deck  #очищаем стол после игры, забираем карты у игроков 
-    @deck.delete("d")
+  def clear_deck  #очищаем стол после игры, забираем карты у игроков
+    @deck.delete('d')
     @user[:user].given = []
     @dealer[:dealer].given = []
   end
