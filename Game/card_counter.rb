@@ -6,7 +6,7 @@ module CardCounter
     @given.each do |card|
       value = card.to_s.chop
       if CARD_VALUE[value].nil?
-        @sum += value.to_i 
+        @sum += value.to_i
       elsif value == 'A'
         @sum += CARD_VALUE[value][0].to_i if @sum > (21 - 11)
         @sum += CARD_VALUE[value][1].to_i if @sum < (21 - 11)
