@@ -1,7 +1,7 @@
 class User
   include CardCounter
 
-  attr_accessor :bank, :given
+  attr_accessor :bank, :given, :sum
   attr_reader :name
 
   def initialize(name)
