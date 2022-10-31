@@ -9,7 +9,7 @@ module CardCounter
         @sum += value.to_i
       elsif value == 'A'
         @sum += CARD_VALUE[value][0].to_i if @sum > (21 - 11)
-        @sum += CARD_VALUE[value][1].to_i if @sum < (21 - 11)
+        @sum += CARD_VALUE[value][1].to_i if @sum <= (21 - 11)
       else
         @sum += CARD_VALUE[value].to_i
       end
